@@ -1,0 +1,1772 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>QazaqNews — Новости Казахстана и мира</title>
+
+    <style>
+        /* =========================
+           ОСНОВНЫЕ СТИЛИ
+        ========================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f5f7;
+            color: #222;
+            transition: 0.3s;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button,
+        input {
+            font-family: inherit;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+            background: #ffffff;
+            border-bottom: 1px solid #ddd;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-top {
+            min-height: 75px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1473e6;
+        }
+
+        .logo span {
+            color: #222;
+        }
+
+        .user-panel {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-panel button,
+        .user-panel a {
+            border: none;
+            background: #1473e6;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        .user-panel .register {
+            background: #222;
+        }
+
+        #themeButton {
+            background: #555;
+        }
+
+        /* =========================
+           NAVIGATION
+        ========================= */
+
+        nav {
+            border-top: 1px solid #eee;
+        }
+
+        .nav-list {
+            display: flex;
+            gap: 25px;
+            list-style: none;
+            padding: 15px 0;
+            overflow-x: auto;
+        }
+
+        .nav-list a {
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .nav-list a:hover {
+            color: #1473e6;
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            margin-top: 30px;
+            padding: 45px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #1473e6, #004494);
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            max-width: 700px;
+        }
+
+        /* =========================
+           SEARCH
+        ========================= */
+
+        .search-box {
+            margin: 25px 0;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .search-box input:focus {
+            border-color: #1473e6;
+        }
+
+        /* =========================
+           CATEGORIES
+        ========================= */
+
+        .categories {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+
+        .category-button {
+            border: none;
+            background: white;
+            padding: 10px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+        }
+
+        .category-button:hover,
+        .category-button.active {
+            background: #1473e6;
+            color: white;
+        }
+
+        /* =========================
+           NEWS
+        ========================= */
+
+        .news-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .news-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+            transition: 0.2s;
+        }
+
+        .news-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .news-image {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+            background: #ddd;
+        }
+
+        .news-content {
+            padding: 18px;
+        }
+
+        .news-category {
+            display: inline-block;
+            color: #1473e6;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .news-title {
+            font-size: 20px;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .news-description {
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .news-date {
+            color: #888;
+            font-size: 13px;
+        }
+
+        .news-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .read-button {
+            background: #1473e6;
+            color: white;
+            border: none;
+            padding: 9px 13px;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        .favorite-button {
+            background: none;
+            border: none;
+            font-size: 25px;
+            cursor: pointer;
+        }
+
+        /* =========================
+           ARTICLE
+        ========================= */
+
+        .article-page {
+            background: white;
+            margin: 30px auto;
+            padding: 35px;
+            max-width: 900px;
+            border-radius: 15px;
+        }
+
+        .article-page img {
+            width: 100%;
+            max-height: 450px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .article-page h1 {
+            font-size: 38px;
+            margin: 15px 0;
+        }
+
+        .article-text {
+            font-size: 18px;
+            line-height: 1.8;
+            white-space: pre-line;
+        }
+
+        .back-button {
+            border: none;
+            background: #1473e6;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        /* =========================
+           AUTH
+        ========================= */
+
+        .auth-container {
+            max-width: 450px;
+            margin: 50px auto;
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+        }
+
+        .auth-container h2 {
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+        }
+
+        .submit-button {
+            width: 100%;
+            border: none;
+            background: #1473e6;
+            color: white;
+            padding: 13px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 7px;
+        }
+
+        /* =========================
+           PROFILE
+        ========================= */
+
+        .profile {
+            background: white;
+            padding: 30px;
+            margin: 30px auto;
+            border-radius: 15px;
+            max-width: 900px;
+        }
+
+        .profile-info {
+            line-height: 2;
+            margin: 20px 0;
+        }
+
+        .logout-button {
+            border: none;
+            background: #d33;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        /* =========================
+           EMPTY
+        ========================= */
+
+        .empty {
+            background: white;
+            padding: 40px;
+            text-align: center;
+            border-radius: 10px;
+            color: #777;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            margin-top: 60px;
+            background: #222;
+            color: white;
+            padding: 30px 0;
+        }
+
+        /* =========================
+           DARK THEME
+        ========================= */
+
+        body.dark {
+            background: #121212;
+            color: #eee;
+        }
+
+        body.dark header,
+        body.dark .news-card,
+        body.dark .auth-container,
+        body.dark .profile,
+        body.dark .article-page,
+        body.dark .empty,
+        body.dark .category-button,
+        body.dark .search-box input {
+            background: #1e1e1e;
+            color: #eee;
+        }
+
+        body.dark .logo span {
+            color: #eee;
+        }
+
+        body.dark .news-description,
+        body.dark .news-date {
+            color: #aaa;
+        }
+
+        body.dark .search-box input {
+            border-color: #444;
+        }
+
+        /* =========================
+           ADAPTIVE
+        ========================= */
+
+        @media (max-width: 900px) {
+            .news-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                width: 94%;
+            }
+
+            .header-top {
+                flex-direction: column;
+                padding: 15px 0;
+            }
+
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding: 25px;
+            }
+
+            .hero h1 {
+                font-size: 28px;
+            }
+
+            .article-page h1 {
+                font-size: 28px;
+            }
+
+            .article-page {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="container header-top">
+
+        <a href="#" class="logo" onclick="showHome()">
+            Qazaq<span>News</span>
+        </a>
+
+        <div class="user-panel" id="userPanel">
+            <button id="themeButton" onclick="toggleTheme()">🌙</button>
+            <button onclick="showLogin()">Войти</button>
+            <button class="register" onclick="showRegister()">Регистрация</button>
+        </div>
+
+    </div>
+
+    <nav>
+        <div class="container">
+
+            <ul class="nav-list">
+
+                <li>
+                    <a href="#" onclick="showHome()">Главная</a>
+                </li>
+
+                <li>
+                    <a href="#" onclick="selectCategory('Казахстан')">
+                        Казахстан
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#" onclick="selectCategory('Мир')">
+                        Мир
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#" onclick="selectCategory('Спорт')">
+                        Спорт
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#" onclick="selectCategory('Технологии')">
+                        Технологии
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#" onclick="selectCategory('Авто')">
+                        Авто
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#" onclick="showProfile()">
+                        Профиль
+                    </a>
+                </li>
+
+            </ul>
+
+        </div>
+    </nav>
+
+</header>
+
+
+<main class="container">
+
+    <div id="app"></div>
+
+</main>
+
+
+<footer>
+
+    <div class="container">
+
+        <h3>QazaqNews</h3>
+
+        <p>
+            Информационный новостной портал.
+        </p>
+
+        <br>
+
+        <p>
+            © 2026 QazaqNews. Учебный проект.
+        </p>
+
+    </div>
+
+</footer>
+
+
+<script>
+
+    /* =========================================
+       МАССИВ НОВОСТЕЙ
+    ========================================= */
+
+    const articles = [
+
+        {
+            id: 1,
+            title: "В Казахстане развивается цифровая инфраструктура",
+            category: "Казахстан",
+            date: "30 сентября 2026",
+            image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3",
+            description:
+                "В регионах Казахстана продолжается развитие цифровых сервисов и инфраструктуры.",
+            text:
+                "В Казахстане продолжается развитие цифровой инфраструктуры. Новые сервисы позволяют гражданам получать государственные и коммерческие услуги быстрее.\n\nОсобое внимание уделяется развитию интернет-сервисов, электронных документов и цифровых платформ."
+        },
+
+        {
+            id: 2,
+            title: "Новый технологический проект запустили в Астане",
+            category: "Технологии",
+            date: "29 сентября 2026",
+            image: "https://images.unsplash.com/photo-1518770660439-4636190af475",
+            description:
+                "Молодые разработчики представили новый цифровой проект.",
+            text:
+                "Группа молодых разработчиков представила новый технологический проект. Основная задача проекта — автоматизировать работу с большими объемами информации.\n\nРазработчики планируют продолжить тестирование системы и добавить новые функции."
+        },
+
+        {
+            id: 3,
+            title: "Казахстанские спортсмены готовятся к международному турниру",
+            category: "Спорт",
+            date: "28 сентября 2026",
+            image: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211",
+            description:
+                "Спортсмены проводят заключительные тренировочные сборы.",
+            text:
+                "Казахстанские спортсмены проводят заключительные тренировочные сборы перед международным турниром.\n\nТренеры отмечают высокий уровень подготовки участников и рассчитывают на успешное выступление команды."
+        },
+
+        {
+            id: 4,
+            title: "В мире продолжается развитие искусственного интеллекта",
+            category: "Мир",
+            date: "27 сентября 2026",
+            image: "https://images.unsplash.com/photo-1677442136019-21780ecad995",
+            description:
+                "Компании по всему миру продолжают внедрять технологии искусственного интеллекта.",
+            text:
+                "Искусственный интеллект продолжает активно развиваться. Компании используют его для анализа данных, автоматизации процессов и создания новых цифровых продуктов.\n\nЭксперты отмечают, что в ближайшие годы технологии продолжат становиться частью повседневной жизни."
+        },
+
+        {
+            id: 5,
+            title: "На рынке Казахстана появились новые автомобили",
+            category: "Авто",
+            date: "26 сентября 2026",
+            image: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7",
+            description:
+                "Автомобильные компании представили несколько новых моделей.",
+            text:
+                "На автомобильном рынке Казахстана появились новые модели автомобилей. Производители делают акцент на безопасности, экономичности и современных электронных системах.\n\nПокупатели смогут выбрать автомобили разных классов."
+        },
+
+        {
+            id: 6,
+            title: "В Казахстане обсуждают развитие образования",
+            category: "Казахстан",
+            date: "25 сентября 2026",
+            image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655",
+            description:
+                "Специалисты обсуждают цифровизацию и развитие образовательных программ.",
+            text:
+                "Представители образовательной сферы обсуждают дальнейшее развитие учебных программ.\n\nОтдельное внимание уделяется цифровым технологиям, программированию и современным профессиям."
+        },
+
+        {
+            id: 7,
+            title: "Разработчики представили новое мобильное приложение",
+            category: "Технологии",
+            date: "24 сентября 2026",
+            image: "https://images.unsplash.com/photo-1551650975-87deedd944c3",
+            description:
+                "Новое приложение предназначено для работы с информацией.",
+            text:
+                "Разработчики представили мобильное приложение с простым интерфейсом.\n\nПользователи смогут получать уведомления, просматривать информацию и сохранять интересующие материалы."
+        },
+
+        {
+            id: 8,
+            title: "Футбольный чемпионат привлек внимание болельщиков",
+            category: "Спорт",
+            date: "23 сентября 2026",
+            image: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55",
+            description:
+                "Матчи чемпионата посетили тысячи болельщиков.",
+            text:
+                "Футбольный чемпионат продолжается. Команды проводят напряженные матчи, а болельщики активно поддерживают своих игроков.\n\nСледующие игры пройдут в ближайшие дни."
+        },
+
+        {
+            id: 9,
+            title: "Крупные города мира внедряют новые транспортные системы",
+            category: "Мир",
+            date: "22 сентября 2026",
+            image: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000",
+            description:
+                "Города используют современные технологии для управления транспортом.",
+            text:
+                "Крупные города продолжают модернизировать транспортную инфраструктуру.\n\nДля управления движением используются цифровые системы, датчики и аналитические платформы."
+        },
+
+        {
+            id: 10,
+            title: "Автомобильные технологии становятся умнее",
+            category: "Авто",
+            date: "21 сентября 2026",
+            image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70",
+            description:
+                "Производители автомобилей внедряют больше электронных систем.",
+            text:
+                "Современные автомобили получают всё больше электронных функций.\n\nСистемы помощи водителю, камеры и различные датчики становятся стандартной частью новых моделей."
+        },
+
+        {
+            id: 11,
+            title: "В Казахстане увеличивается интерес к IT-профессиям",
+            category: "Технологии",
+            date: "20 сентября 2026",
+            image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+            description:
+                "Молодежь всё чаще выбирает программирование и цифровые специальности.",
+            text:
+                "Информационные технологии остаются одним из интересных направлений для молодых специалистов.\n\nСтуденты изучают программирование, веб-разработку, базы данных и искусственный интеллект."
+        },
+
+        {
+            id: 12,
+            title: "В городах Казахстана проходят спортивные мероприятия",
+            category: "Спорт",
+            date: "19 сентября 2026",
+            image: "https://images.unsplash.com/photo-1552674605-db6ffd4facb5",
+            description:
+                "В разных городах проходят массовые спортивные мероприятия.",
+            text:
+                "В городах Казахстана проходят спортивные мероприятия для профессиональных спортсменов и любителей.\n\nОрганизаторы отмечают высокий интерес со стороны жителей."
+        }
+
+    ];
+
+
+    /* =========================================
+       ПЕРЕМЕННЫЕ
+    ========================================= */
+
+    let currentCategory = "Все";
+    let currentSearch = "";
+
+
+    /* =========================================
+       LOCAL STORAGE
+    ========================================= */
+
+    function getUsers() {
+
+        const users = localStorage.getItem("users");
+
+        if (users) {
+            return JSON.parse(users);
+        }
+
+        return [];
+    }
+
+
+    function getCurrentUser() {
+
+        const user = localStorage.getItem("currentUser");
+
+        if (user) {
+            return JSON.parse(user);
+        }
+
+        return null;
+    }
+
+
+    function getFavorites() {
+
+        const favorites = localStorage.getItem("favorites");
+
+        if (favorites) {
+            return JSON.parse(favorites);
+        }
+
+        return [];
+    }
+
+
+    /* =========================================
+       ГЛАВНАЯ СТРАНИЦА
+    ========================================= */
+
+    function showHome() {
+
+        event?.preventDefault();
+
+        document.getElementById("app").innerHTML = `
+
+            <section class="hero">
+
+                <h1>Последние новости</h1>
+
+                <p>
+                    Новости Казахстана, мира, спорта,
+                    технологий и автомобилей.
+                </p>
+
+            </section>
+
+
+            <div class="search-box">
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Поиск новостей..."
+                    oninput="searchNews()"
+                >
+
+            </div>
+
+
+            <div class="categories">
+
+                <button
+                    class="category-button active"
+                    onclick="selectCategory('Все')"
+                >
+                    Все
+                </button>
+
+                <button
+                    class="category-button"
+                    onclick="selectCategory('Казахстан')"
+                >
+                    Казахстан
+                </button>
+
+                <button
+                    class="category-button"
+                    onclick="selectCategory('Мир')"
+                >
+                    Мир
+                </button>
+
+                <button
+                    class="category-button"
+                    onclick="selectCategory('Спорт')"
+                >
+                    Спорт
+                </button>
+
+                <button
+                    class="category-button"
+                    onclick="selectCategory('Технологии')"
+                >
+                    Технологии
+                </button>
+
+                <button
+                    class="category-button"
+                    onclick="selectCategory('Авто')"
+                >
+                    Авто
+                </button>
+
+            </div>
+
+
+            <div class="news-header">
+
+                <h2>Новости</h2>
+
+                <span id="newsCount"></span>
+
+            </div>
+
+
+            <div id="newsList" class="news-grid"></div>
+        `;
+
+        renderNews();
+
+    }
+
+
+    /* =========================================
+       ВЫВОД НОВОСТЕЙ
+    ========================================= */
+
+    function renderNews() {
+
+        let filteredNews = articles.filter(function(article) {
+
+            const categoryMatch =
+                currentCategory === "Все" ||
+                article.category === currentCategory;
+
+            const searchMatch =
+                article.title
+                    .toLowerCase()
+                    .includes(currentSearch.toLowerCase()) ||
+
+                article.description
+                    .toLowerCase()
+                    .includes(currentSearch.toLowerCase());
+
+            return categoryMatch && searchMatch;
+
+        });
+
+
+        const newsList =
+            document.getElementById("newsList");
+
+        if (!newsList) {
+            return;
+        }
+
+
+        document.getElementById("newsCount").textContent =
+            "Найдено: " + filteredNews.length;
+
+
+        if (filteredNews.length === 0) {
+
+            newsList.innerHTML = `
+                <div class="empty">
+                    <h3>Новости не найдены</h3>
+                    <p>Попробуйте изменить запрос.</p>
+                </div>
+            `;
+
+            return;
+        }
+
+
+        newsList.innerHTML = "";
+
+
+        filteredNews.forEach(function(article) {
+
+            const favorites = getFavorites();
+
+            const isFavorite =
+                favorites.includes(article.id);
+
+
+            const card = document.createElement("div");
+
+            card.className = "news-card";
+
+
+            card.innerHTML = `
+
+                <img
+                    class="news-image"
+                    src="${article.image}"
+                    alt="${article.title}"
+                >
+
+
+                <div class="news-content">
+
+                    <span class="news-category">
+                        ${article.category}
+                    </span>
+
+
+                    <h3 class="news-title">
+                        ${article.title}
+                    </h3>
+
+
+                    <p class="news-description">
+                        ${article.description}
+                    </p>
+
+
+                    <div class="news-date">
+                        ${article.date}
+                    </div>
+
+
+                    <div class="news-actions">
+
+                        <button
+                            class="read-button"
+                            onclick="showArticle(${article.id})"
+                        >
+                            Читать
+                        </button>
+
+
+                        <button
+                            class="favorite-button"
+                            onclick="toggleFavorite(${article.id})"
+                        >
+                            ${isFavorite ? "❤️" : "🤍"}
+                        </button>
+
+                    </div>
+
+                </div>
+            `;
+
+
+            newsList.appendChild(card);
+
+        });
+
+    }
+
+
+    /* =========================================
+       КАТЕГОРИЯ
+    ========================================= */
+
+    function selectCategory(category) {
+
+        currentCategory = category;
+
+        showHome();
+
+    }
+
+
+    /* =========================================
+       ПОИСК
+    ========================================= */
+
+    function searchNews() {
+
+        const input =
+            document.getElementById("searchInput");
+
+        if (input) {
+            currentSearch = input.value;
+        }
+
+        renderNews();
+
+    }
+
+
+    /* =========================================
+       ОТКРЫТИЕ НОВОСТИ
+    ========================================= */
+
+    function showArticle(id) {
+
+        const article =
+            articles.find(function(item) {
+                return item.id === id;
+            });
+
+
+        if (!article) {
+            return;
+        }
+
+
+        const favorites = getFavorites();
+
+        const isFavorite =
+            favorites.includes(article.id);
+
+
+        document.getElementById("app").innerHTML = `
+
+            <article class="article-page">
+
+                <button
+                    class="back-button"
+                    onclick="showHome()"
+                >
+                    ← Назад
+                </button>
+
+
+                <span class="news-category">
+                    ${article.category}
+                </span>
+
+
+                <h1>
+                    ${article.title}
+                </h1>
+
+
+                <div class="news-date">
+                    ${article.date}
+                </div>
+
+
+                <img
+                    src="${article.image}"
+                    alt="${article.title}"
+                >
+
+
+                <p class="article-text">
+                    ${article.text}
+                </p>
+
+
+                <br>
+
+
+                <button
+                    class="favorite-button"
+                    onclick="toggleFavoriteFromArticle(${article.id})"
+                >
+                    ${isFavorite ? "❤️ Убрать из избранного" : "🤍 Добавить в избранное"}
+                </button>
+
+            </article>
+        `;
+
+    }
+
+
+    /* =========================================
+       ИЗБРАННОЕ
+    ========================================= */
+
+    function toggleFavorite(id) {
+
+        let favorites = getFavorites();
+
+
+        if (favorites.includes(id)) {
+
+            favorites =
+                favorites.filter(function(item) {
+                    return item !== id;
+                });
+
+        } else {
+
+            favorites.push(id);
+
+        }
+
+
+        localStorage.setItem(
+            "favorites",
+            JSON.stringify(favorites)
+        );
+
+
+        renderNews();
+
+    }
+
+
+    function toggleFavoriteFromArticle(id) {
+
+        let favorites = getFavorites();
+
+
+        if (favorites.includes(id)) {
+
+            favorites =
+                favorites.filter(function(item) {
+                    return item !== id;
+                });
+
+        } else {
+
+            favorites.push(id);
+
+        }
+
+
+        localStorage.setItem(
+            "favorites",
+            JSON.stringify(favorites)
+        );
+
+
+        showArticle(id);
+
+    }
+
+
+    /* =========================================
+       РЕГИСТРАЦИЯ
+    ========================================= */
+
+    function showRegister() {
+
+        document.getElementById("app").innerHTML = `
+
+            <div class="auth-container">
+
+                <h2>Регистрация</h2>
+
+
+                <form onsubmit="register(event)">
+
+                    <div class="form-group">
+
+                        <label>
+                            Имя
+                        </label>
+
+                        <input
+                            type="text"
+                            id="regName"
+                            placeholder="Введите имя"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="regEmail"
+                            placeholder="Введите email"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Пароль
+                        </label>
+
+                        <input
+                            type="password"
+                            id="regPassword"
+                            placeholder="Минимум 6 символов"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Повторите пароль
+                        </label>
+
+                        <input
+                            type="password"
+                            id="regPassword2"
+                            placeholder="Повторите пароль"
+                            required
+                        >
+
+                    </div>
+
+
+                    <button
+                        class="submit-button"
+                        type="submit"
+                    >
+                        Зарегистрироваться
+                    </button>
+
+
+                    <div id="registerMessage"></div>
+
+                </form>
+
+            </div>
+        `;
+
+    }
+
+
+    function register(e) {
+
+        e.preventDefault();
+
+
+        const name =
+            document.getElementById("regName").value.trim();
+
+        const email =
+            document.getElementById("regEmail").value.trim();
+
+        const password =
+            document.getElementById("regPassword").value;
+
+        const password2 =
+            document.getElementById("regPassword2").value;
+
+
+        const message =
+            document.getElementById("registerMessage");
+
+
+        if (password.length < 6) {
+
+            message.innerHTML =
+                "Пароль должен содержать минимум 6 символов.";
+
+            return;
+        }
+
+
+        if (password !== password2) {
+
+            message.innerHTML =
+                "Пароли не совпадают.";
+
+            return;
+        }
+
+
+        let users = getUsers();
+
+
+        const exists =
+            users.find(function(user) {
+                return user.email === email;
+            });
+
+
+        if (exists) {
+
+            message.innerHTML =
+                "Пользователь с таким email уже существует.";
+
+            return;
+        }
+
+
+        const newUser = {
+
+            id: Date.now(),
+
+            name: name,
+
+            email: email,
+
+            password: password,
+
+            date: new Date().toLocaleDateString()
+
+        };
+
+
+        users.push(newUser);
+
+
+        localStorage.setItem(
+            "users",
+            JSON.stringify(users)
+        );
+
+
+        message.innerHTML =
+            "Регистрация успешна!";
+
+
+        setTimeout(function() {
+
+            showLogin();
+
+        }, 1000);
+
+    }
+
+
+    /* =========================================
+       ВХОД
+    ========================================= */
+
+    function showLogin() {
+
+        document.getElementById("app").innerHTML = `
+
+            <div class="auth-container">
+
+                <h2>Вход</h2>
+
+
+                <form onsubmit="login(event)">
+
+                    <div class="form-group">
+
+                        <label>
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="loginEmail"
+                            placeholder="Введите email"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Пароль
+                        </label>
+
+                        <input
+                            type="password"
+                            id="loginPassword"
+                            placeholder="Введите пароль"
+                            required
+                        >
+
+                    </div>
+
+
+                    <button
+                        class="submit-button"
+                        type="submit"
+                    >
+                        Войти
+                    </button>
+
+
+                    <div id="loginMessage"></div>
+
+                </form>
+
+            </div>
+        `;
+
+    }
+
+
+    function login(e) {
+
+        e.preventDefault();
+
+
+        const email =
+            document.getElementById("loginEmail").value.trim();
+
+        const password =
+            document.getElementById("loginPassword").value;
+
+
+        const users = getUsers();
+
+
+        const user =
+            users.find(function(user) {
+
+                return user.email === email &&
+                       user.password === password;
+
+            });
+
+
+        const message =
+            document.getElementById("loginMessage");
+
+
+        if (!user) {
+
+            message.innerHTML =
+                "Неверный email или пароль.";
+
+            return;
+        }
+
+
+        localStorage.setItem(
+            "currentUser",
+            JSON.stringify(user)
+        );
+
+
+        showProfile();
+
+    }
+
+
+    /* =========================================
+       ПРОФИЛЬ
+    ========================================= */
+
+    function showProfile() {
+
+        const user = getCurrentUser();
+
+
+        if (!user) {
+
+            document.getElementById("app").innerHTML = `
+
+                <div class="auth-container">
+
+                    <h2>Профиль</h2>
+
+                    <p>
+                        Вы не авторизованы.
+                    </p>
+
+                    <br>
+
+                    <button
+                        class="submit-button"
+                        onclick="showLogin()"
+                    >
+                        Войти
+                    </button>
+
+                </div>
+
+            `;
+
+            return;
+        }
+
+
+        const favorites = getFavorites();
+
+
+        const favoriteArticles =
+            articles.filter(function(article) {
+
+                return favorites.includes(article.id);
+
+            });
+
+
+        let favoritesHTML = "";
+
+
+        if (favoriteArticles.length === 0) {
+
+            favoritesHTML =
+                "<p>Избранных новостей пока нет.</p>";
+
+        } else {
+
+            favoriteArticles.forEach(function(article) {
+
+                favoritesHTML += `
+
+                    <div
+                        style="
+                            padding:15px;
+                            border-bottom:1px solid #ddd;
+                        "
+                    >
+
+                        <h3>
+                            ${article.title}
+                        </h3>
+
+                        <p>
+                            ${article.category}
+                        </p>
+
+                        <br>
+
+                        <button
+                            class="read-button"
+                            onclick="showArticle(${article.id})"
+                        >
+                            Читать
+                        </button>
+
+                    </div>
+
+                `;
+
+            });
+
+        }
+
+
+        document.getElementById("app").innerHTML = `
+
+            <div class="profile">
+
+                <h1>Профиль</h1>
+
+
+                <div class="profile-info">
+
+                    <p>
+                        <strong>Имя:</strong>
+                        ${user.name}
+                    </p>
+
+                    <p>
+                        <strong>Email:</strong>
+                        ${user.email}
+                    </p>
+
+                    <p>
+                        <strong>Дата регистрации:</strong>
+                        ${user.date}
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="logout-button"
+                    onclick="logout()"
+                >
+                    Выйти
+                </button>
+
+
+                <br><br>
+
+
+                <h2>
+                    Избранные новости
+                </h2>
+
+
+                <br>
+
+
+                ${favoritesHTML}
+
+            </div>
+
+        `;
+
+    }
+
+
+    /* =========================================
+       ВЫХОД
+    ========================================= */
+
+    function logout() {
+
+        localStorage.removeItem("currentUser");
+
+        showHome();
+
+    }
+
+
+    /* =========================================
+       ТЁМНАЯ ТЕМА
+    ========================================= */
+
+    function toggleTheme() {
+
+        document.body.classList.toggle("dark");
+
+
+        if (document.body.classList.contains("dark")) {
+
+            localStorage.setItem(
+                "theme",
+                "dark"
+            );
+
+        } else {
+
+            localStorage.setItem(
+                "theme",
+                "light"
+            );
+
+        }
+
+    }
+
+
+    /* =========================================
+       ПАНЕЛЬ ПОЛЬЗОВАТЕЛЯ
+    ========================================= */
+
+    function updateUserPanel() {
+
+        const panel =
+            document.getElementById("userPanel");
+
+        const user =
+            getCurrentUser();
+
+
+        if (!panel) {
+            return;
+        }
+
+
+        if (user) {
+
+            panel.innerHTML = `
+
+                <button
+                    id="themeButton"
+                    onclick="toggleTheme()"
+                >
+                    🌙
+                </button>
+
+                <button
+                    onclick="showProfile()"
+                >
+                    👤 ${user.name}
+                </button>
+
+                <button
+                    class="register"
+                    onclick="logout()"
+                >
+                    Выйти
+                </button>
+
+            `;
+
+        }
+
+    }
+
+
+    /* =========================================
+       ЗАПУСК САЙТА
+    ========================================= */
+
+    window.onload = function() {
+
+        const savedTheme =
+            localStorage.getItem("theme");
+
+
+        if (savedTheme === "dark") {
+
+            document.body.classList.add("dark");
+
+        }
+
+
+        showHome();
+
+        updateUserPanel();
+
+    };
+
+</script>
+
+</body>
+</html>
